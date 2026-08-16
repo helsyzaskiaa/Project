@@ -21,6 +21,10 @@ const Siswa = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    Email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     tableName: "siswa",
