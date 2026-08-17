@@ -3,6 +3,7 @@ const router = express.Router();
 const siswaController = require("../controllers/siswaController");
 
 router.get("/search", siswaController.search);
+router.get("/Umur", siswaController.getUmur);
 router.get("/", siswaController.getAll);
 router.get("/:id", siswaController.getById);
 router.post("/", siswaController.create);

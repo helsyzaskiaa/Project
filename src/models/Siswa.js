@@ -25,11 +25,16 @@ const Siswa = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    Umur:{
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   },
   {
     tableName: "siswa",
     timestamps: true,
   }
+  
 );
 
 module.exports = Siswa;

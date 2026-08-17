@@ -27,14 +27,14 @@ exports.getById = async (req, res) => {
 // POST tambah siswa
 exports.create = async (req, res) => {
   try {
-    const { nama, kelas, jurusan, Email } = req.body;
-    if (!nama || !kelas || !jurusan || !Email) {
+    const { nama, kelas, jurusan, Email, Umur } = req.body;
+    if (!nama || !kelas || !jurusan || !Email ||!Umur) {
       return res.status(400).json({
         success: false,
         message: "nama, kelas, jurusan dan email wajib diisi",
       });
     }
-    const data = await Siswa.create({ nama, kelas, jurusan, Email });
+    const data = await Siswa.create({ nama, kelas, jurusan, Email, Umur });
     res.status(201).json({
       success: true,
       message: "Data siswa berhasil ditambahkan",
@@ -56,11 +56,27 @@ exports.update = async (req, res) => {
       nama: req.body.nama ?? data.nama,
       kelas: req.body.kelas ?? data.kelas,
       jurusan: req.body.jurusan ?? data.jurusan,
-      Email: req.body.Email ?? data.Email
+      Email: req.body.Email ?? data.Email,
+      Umur: req.body.Umur ?? data.Umur
     });
     res.json({ success: true, message: "Data siswa berhasil diubah", data });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getUmur=async (req, res)=>{
+  try{
+    const data= await Siswa.findAll({
+      where:{
+        Umur:{
+          [Op.gt]:16
+        }
+      }
+    });
+    res.json({success: true,data});
+  }catch (error){
+    res.status(500).json({success: false, message: error.message});
   }
 };
 
@@ -90,9 +106,10 @@ exports.search = async (req, res) => {
           { kelas: { [Op.like]: `%${keyword}%` } },
           { jurusan: { [Op.like]: `%${keyword}%` } },
           { Email: { [Op.like]: `%${keyword}%` } },
+          { Umur: { [Op.like]: `%${keyword}%` } },
         ],
       },
-      order: [["id", "DESC"]],
+      order: [["id", "ASC"]],
     });
     res.json({ success: true, keyword, data });
   } catch (error) {
